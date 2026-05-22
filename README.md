@@ -4,6 +4,8 @@
 
 **Precision Agriculture Meets Artificial Intelligence**
 
+[![Deploy](https://img.shields.io/badge/Launch-Live%20App-00e676?style=for-the-badge&logo=vercel&logoColor=white)](https://agro-dusky.vercel.app)
+
 ![Version](https://img.shields.io/badge/version-1.0.0-brightgreen?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)
