@@ -44,8 +44,6 @@
 - [🌐 Multi-Language Support](#-multi-language-support)
 - [☁️ Deployment](#️-deployment)
 - [📸 Application Pages](#-application-pages)
-- [🗺 Roadmap](#-roadmap)
-- [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
 
 ---
@@ -440,17 +438,6 @@ After running the database seed script (`python migrations/init_db.py`), the fol
 
 All API endpoints are prefixed with `/api`. Authentication uses **Bearer JWT tokens** in the `Authorization` header.
 
-### 🔐 Authentication — `/api/auth`
-
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| `POST` | `/register` | ❌ | Register a new user. Body: `{email, password, username, full_name, role, phone, location}` |
-| `POST` | `/login` | ❌ | Authenticate and receive JWT. Body: `{email, password}` |
-| `POST` | `/forgot-password` | ❌ | Request password reset. Body: `{email}` |
-| `GET` | `/profile` | ✅ | Get authenticated user's profile |
-| `PUT` | `/profile` | ✅ | Update profile fields. Body: `{full_name, phone, location, password}` |
-| `POST` | `/logout` | ❌ | Logout (client discards JWT) |
-
 ### 🌾 Predictions — `/api/predictions`
 
 | Method | Endpoint | Auth | Description |
@@ -498,14 +485,6 @@ All API endpoints are prefixed with `/api`. Authentication uses **Bearer JWT tok
 | `GET` | `/reports` | ✅ | List all disease reports for the current user |
 | `GET` | `/reports/<id>` | ✅ | Get a specific disease report |
 
-### 🌤 Weather — `/api/weather`
-
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| `GET` | `/current?city=<city>` | ❌ | Current conditions (temp, humidity, wind, UV, soil temp, pressure) |
-| `GET` | `/forecast?city=<city>&days=<n>` | ❌ | 5-day daily + 24-hour hourly forecast |
-| `GET` | `/alerts` | ❌ | Active weather warnings with agricultural advisories |
-
 ### 🧠 Recommendations — `/api/recommendations`
 
 | Method | Endpoint | Auth | Description |
@@ -516,16 +495,6 @@ All API endpoints are prefixed with `/api`. Authentication uses **Bearer JWT tok
 | `GET` | `/fertilizer` | ❌ | NPK ratio and split-dosing plan for given `crop`, `soil` |
 | `GET` | `/crop-suggestion` | ❌ | Ranked crop suggestions for given `soil`, `temp`, `rain`, `hum` |
 
-### 📊 Analytics — `/api/analytics`
-
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| `GET` | `/yield-trends` | ❌ | 6-month historical yield trend data |
-| `GET` | `/regional` | ❌ | Regional production comparisons (6 Indian states) |
-| `GET` | `/seasonal` | ❌ | Production split across Kharif, Rabi, Zaid seasons |
-| `GET` | `/accuracy` | ❌ | ML model validation accuracy history |
-| `GET` | `/dashboard-stats` | ✅ | User-specific aggregate stats (predictions, avg yield, accuracy) |
-
 ### 🔔 Notifications — `/api/notifications`
 
 | Method | Endpoint | Auth | Description |
@@ -534,12 +503,6 @@ All API endpoints are prefixed with `/api`. Authentication uses **Bearer JWT tok
 | `POST` | `/` | ✅ | Create a new notification |
 | `PUT` | `/<id>/read` | ✅ | Mark a notification as read |
 | `DELETE` | `/<id>` | ✅ | Delete a notification |
-
-### 💬 Chatbot — `/api/chatbot`
-
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| `POST` | `/message` | ❌ | Send a message and receive an AI agriculture response |
 
 ### 🛡 Admin — `/api/admin`
 
@@ -551,12 +514,6 @@ All API endpoints are prefixed with `/api`. Authentication uses **Bearer JWT tok
 | `GET` | `/stats` | 🔒 Admin | System metrics (user counts, predictions, reports) |
 | `POST` | `/broadcast` | 🔒 Admin | Broadcast notification to all users |
 | `POST` | `/crops` | 🔒 Admin | Add/update crop catalog entries |
-
-### ❤️ Health Check
-
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| `GET` | `/api/health` | ❌ | Platform status (database, ML model readiness) |
 
 ---
 
@@ -622,48 +579,10 @@ The AI chatbot additionally supports offline responses in **Tamil** (`ta`) and *
 
 ## ☁️ Deployment
 
-The project is deployed using a split architecture:
-
 | Component | Platform | URL |
 |-----------|----------|-----|
 | **Frontend** | Vercel (Static Site) | [agro-dusky.vercel.app](https://agro-dusky.vercel.app) |
 | **Backend** | Render (Web Service) | [agro-t1kk.onrender.com](https://agro-t1kk.onrender.com/api/health) |
-
-### Render Backend Configuration (`render.yaml`)
-
-```yaml
-services:
-  - name: agro-backend
-    type: web
-    runtime: python
-    env: python
-    region: oregon
-    rootDir: backend
-    buildCommand: chmod +x build.sh && ./build.sh
-    startCommand: gunicorn run:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120
-    envVars:
-      - key: FLASK_ENV
-        value: production
-      - key: PYTHON_VERSION
-        value: "3.11.9"
-      - key: SECRET_KEY
-        generateValue: true
-      - key: JWT_SECRET_KEY
-        generateValue: true
-      - key: GEMINI_API_KEY
-        sync: false        # Set manually in Render Dashboard
-```
-
-### Vercel Frontend Configuration
-
-- **Build Command:** `npm install && npm run build`
-- **Output Directory:** `dist`
-- **SPA Rewrites:** `/* → /index.html`
-- **Environment Variable:** `VITE_API_URL` → Backend Render URL
-
-### Auto-Seed Resilience
-
-The backend includes a startup auto-seeding mechanism (`_seed_if_empty()` in `app/__init__.py`) that detects empty databases and automatically recreates demo users and crop data. This ensures the application works reliably on Render's free tier, where the filesystem is ephemeral and gets wiped on every spin-down.
 
 ---
 
@@ -680,45 +599,6 @@ The backend includes a startup auto-seeding mechanism (`_seed_if_empty()` in `ap
 | **📈 Analytics** | Multi-year yield curves, regional comparisons (6 states), seasonal breakdowns, ML validation accuracy |
 | **🛡 Admin Panel** | User role management table, system health monitoring, crop catalog CRUD, global notification broadcast |
 | **👤 Profile** | Editable user profile, password update, farm preferences |
-
----
-
-## 🗺 Roadmap
-
-- [ ] Integrate real weather API (OpenWeatherMap / Visual Crossing)
-- [ ] Deep learning CNN model for disease detection (TensorFlow/PyTorch)
-- [ ] Real-time IoT sensor data integration (MQTT)
-- [ ] Mobile app (React Native)
-- [ ] SMS/WhatsApp notification alerts via Twilio
-- [ ] Satellite imagery analysis for crop health (NDVI)
-- [ ] Farmer-to-buyer marketplace module
-- [ ] Export reports as PDF
-- [ ] Add more languages (Tamil, Marathi, Bengali, Kannada)
-- [ ] Progressive Web App (PWA) support
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'feat: add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-### Commit Convention
-
-This project follows [Conventional Commits](https://www.conventionalcommits.org/):
-
-| Prefix | Purpose |
-|--------|---------|
-| `feat:` | New feature |
-| `fix:` | Bug fix |
-| `docs:` | Documentation only |
-| `chore:` | Maintenance / tooling |
-| `refactor:` | Code restructuring |
 
 ---
 
