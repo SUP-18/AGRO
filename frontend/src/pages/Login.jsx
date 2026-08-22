@@ -100,7 +100,7 @@ export default function Login() {
               <RiLockLine className="absolute left-4 top-1/2 -translate-y-1/2 text-dark-500" />
               <input type={showPass ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} placeholder={t('common.password')}
                 className="input-field pl-11 pr-11" />
-              <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300">
+              <button type="button" onClick={() => setShowPass(!showPass)} title={showPass ? 'Hide password' : 'Show password'} aria-label={showPass ? 'Hide password' : 'Show password'} className="absolute right-4 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300">
                 {showPass ? <RiEyeOffLine /> : <RiEyeLine />}
               </button>
             </div>

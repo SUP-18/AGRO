@@ -237,6 +237,7 @@ export default function Prediction() {
                       type="number" min="0" max="500"
                       value={formData.fertilizer_usage}
                       onChange={(e) => handleInputChange('fertilizer_usage', e.target.value)}
+                      placeholder="e.g. 120 (kg/ha)"
                       className="w-full bg-dark-950 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition font-outfit"
                     />
                   </div>
@@ -251,6 +252,7 @@ export default function Prediction() {
                       type="number" step="0.1" min="0.1" max="100"
                       value={formData.land_area}
                       onChange={(e) => handleInputChange('land_area', e.target.value)}
+                      placeholder="e.g. 2.0 (ha)"
                       className="w-full bg-dark-950 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition font-outfit"
                     />
                   </div>
