@@ -1,3 +1,4 @@
+# AgroPredict Infrastructure as Code (IaC) Deployment Blueprint
 services:
   # ──────────────── Backend (Flask API) ────────────────
   - type: web

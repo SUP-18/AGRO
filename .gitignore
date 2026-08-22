@@ -57,6 +57,10 @@ dist/
 *.sln
 *.sw?
 
+# OS & Testing
+.DS_Store
+.pytest_cache/
+
 # Uploads and temporary assets
 backend/uploads/
 scratch/
